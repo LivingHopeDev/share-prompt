@@ -31,17 +31,17 @@ export const PATCH = async (
   const { prompt, tag } = await request.json();
   try {
     await connectToDB();
-    const existinPrompt = await Prompt.findById(params.id).populate("creator");
-    if (!existinPrompt) {
+    const existingPrompt = await Prompt.findById(params.id).populate("creator");
+    if (!existingPrompt) {
       return NextResponse.json(
         { message: "Prompt not found" },
         { status: 404 }
       );
     }
-    existinPrompt.prompt = prompt;
-    existinPrompt.tag = tag;
-    await existinPrompt.save();
-    return new NextResponse(JSON.stringify(existinPrompt), { status: 200 });
+    existingPrompt.prompt = prompt;
+    existingPrompt.tag = tag;
+    await existingPrompt.save();
+    return new NextResponse(JSON.stringify(existingPrompt), { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to fetch prompt" },

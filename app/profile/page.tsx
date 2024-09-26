@@ -23,7 +23,6 @@ const MyProfile = () => {
     const fetchPosts = async () => {
       const response = await fetch(`/api/users/${session?.user.id}/posts`);
       const data = await response.json();
-      console.log("posts", data);
       setPosts(data);
     };
     if (session?.user?.id) {
@@ -33,7 +32,22 @@ const MyProfile = () => {
   const handleEdit = (post: Post) => {
     router.push(`/update-prompt?id=${post._id}`);
   };
-  const handleDelete = async (post: Post) => {};
+  const handleDelete = async (post: Post) => {
+    const hasConfirmed = confirm(
+      "Are you sure you want to delete this prompt?"
+    );
+    if (hasConfirmed) {
+      try {
+        await fetch(`/api/prompt/${post._id.toString()}`, {
+          method: "DELETE",
+        });
+        const filteredPosts = posts.filter((p: Post) => p._id !== post._id);
+        setPosts(filteredPosts);
+      } catch (error) {
+        console.log("Failed to delete post");
+      }
+    }
+  };
   return (
     <Profile
       name="My"

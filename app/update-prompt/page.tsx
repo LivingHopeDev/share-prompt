@@ -29,13 +29,40 @@ const EditPrompt: React.FC = () => {
     if (promptId) getPromptDetails();
   }, [promptId]);
 
+  const updatePrompt = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitting(true);
+    if (!promptId) return alert("Prompt ID not found");
+
+    try {
+      const response = await fetch(`/api/prompt/${promptId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: post.prompt,
+          tag: post.tag,
+        }),
+      });
+
+      if (response.ok) {
+        router.push("/"); // Redirect to home page
+      }
+    } catch (error) {
+      console.log("Error creating prompt:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <Form
       type="Edit"
       post={post}
       setPost={setPost}
       submitting={submitting}
-      handleSubmit={() => {}}
+      handleSubmit={updatePrompt}
     />
   );
 };
