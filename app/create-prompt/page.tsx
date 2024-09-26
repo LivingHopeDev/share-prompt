@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation"; // Use the updated import from 'next/navigation'
+import { useRouter } from "next/navigation";
 import Form from "@components/Form";
 
 // Define the post type
